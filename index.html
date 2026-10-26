@@ -476,7 +476,7 @@ $('f').addEventListener('submit', async e => {
     e.target.style.display = 'none'; $('ok').style.display = 'block'; actions();
     $('rsvp').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   } catch (x) {
-    err.textContent = x.message === 'Liste complète' ? 'La liste est complète. Contacte l’équipe pour être ajouté.' : 'Ta confirmation n’a pas pu être envoyée. Vérifie ta connexion et réessaie.'; err.style.display = 'block';
+    err.textContent = x.message === 'Liste complète' ? 'La liste est complète. Contacte l’équipe pour être ajouté.' : 'Ta confirmation n’a pas pu être envoyée. Vérifie ta connexion et réessaie. [' + x.message + ']'; err.style.display = 'block';
     btn.disabled = false; btn.textContent = 'Je confirme ma présence';
   }
 });
