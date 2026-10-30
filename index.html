@@ -153,6 +153,9 @@ footer .fine{font-size:.9rem}
 footer .fine a{color:var(--paper)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}#bar{transition:none}.n.t,.marq .track,.float,.glow,.hero .logo,.hero .tag,.hero .when,.hero .cta.big,.hero .cue,.pass{animation:none!important}.card{transition:none}}
 
+.closed{border:1px solid #ffffff26;border-left:4px solid var(--blood);background:#ffffff0a;padding:1.6rem 1.4rem;display:grid;gap:.9rem;text-align:left}
+.closed h3{margin:0;font:400 clamp(1.6rem,6vw,2.2rem)/1.1 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.closed p{margin:0;line-height:1.55}
 /* GALERIE */
 .gal{max-width:1200px;margin:0 auto;padding:5rem 1rem 4rem}
 .gal-head{text-align:center;display:grid;gap:.6rem;justify-items:center;margin-bottom:2.5rem}
@@ -468,7 +471,21 @@ async function save(data) {
   catch (e1) { if (!(navigator.sendBeacon && navigator.sendBeacon(ENDPOINT, body))) throw e1; }
   return { ok: true, code };
 }
+const INSCRIPTIONS_OUVERTES = false; // mets true pour rouvrir les inscriptions
+if (!INSCRIPTIONS_OUVERTES) {
+  document.querySelector('#rsvp h2').textContent = 'Inscriptions closes';
+  document.querySelector('#rsvp .lead').hidden = true;
+  $('f').hidden = true;
+  const c = document.createElement('article'); c.className = 'closed'; c.setAttribute('role', 'status');
+  c.innerHTML = '<p class="k">Release Party · Forgiveness</p><h3>La liste est complète</h3>'
+    + '<p>Le nombre maximal d’invités est atteint : les inscriptions sont désormais closes. Merci sincèrement à toutes les personnes qui ont confirmé leur présence et qui soutiennent ce projet.</p>'
+    + '<p>Si tu as déjà confirmé, garde ton pass d’entrée : il te sera demandé à l’accueil.</p>'
+    + '<p>Rendez-vous le dimanche 1er novembre 2026 à 15h. Pour les autres, l’EP Forgiveness sera bientôt disponible sur Spotify et Apple Music.</p>';
+  $('f').after(c);
+  document.querySelectorAll('a[href="#rsvp"]').forEach(a => { a.textContent = 'Inscriptions closes'; });
+}
 $('f').addEventListener('submit', async e => {
+  if (!INSCRIPTIONS_OUVERTES) { e.preventDefault(); return; }
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
   if (data.site) return;
